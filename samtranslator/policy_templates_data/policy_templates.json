@@ -2260,6 +2260,51 @@
           }
         ]
       }
+    },
+    "LogToCloudWatchLogs": {
+      "Description": "Gives permission to log to a Log Group",
+      "Parameters": {
+        "LogGroupArn": {
+          "Description": "Name of the Log Group"
+        }
+      },
+      "Definition": {
+        "Statement": [
+          {
+            "Effect": "Allow",
+            "Action": [
+              "logs:CreateLogDelivery",
+              "logs:CreateLogGroup",
+              "logs:DeleteLogDelivery",
+              "logs:DescribeResourcePolicies",
+              "logs:GetLogDelivery",
+              "logs:ListLogDeliveries",
+              "logs:PutResourcePolicy",
+              "logs:UpdateLogDelivery",
+            ],
+            "Resource": "*"
+          },
+          {
+            "Effect": "Allow",
+            "Action": [
+              "logs:CreateLogStream",
+              "logs:DescribeLogGroups",
+              "logs:DescribeLogStreams",
+              "logs:PutLogEvents"
+            ],
+            "Resource": {
+              "Fn::Sub": [
+                "arn:${AWS::Partition}:logs:${AWS::Region}:${AWS::AccountId}:log-group:${logGroupName}:*",
+                {
+                  "logGroupName": {
+                    "Ref": "LogGroupName"
+                  }
+                }
+              ]
+            }
+          }		
+        ]
+      }
     }
   }
 }
